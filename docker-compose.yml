@@ -1,0 +1,82 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - nextcloud_net
+
+  nextcloud1:
+    image: nextcloud
+    container_name: nextcloud1
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: nextcloud1
+      MYSQL_USER: nc1_user
+      MYSQL_PASSWORD: nc1_pass
+    volumes:
+      - ./data/nextcloud1:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - nextcloud_net
+
+  nextcloud2:
+    image: nextcloud
+    container_name: nextcloud2
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: nextcloud2
+      MYSQL_USER: nc2_user
+      MYSQL_PASSWORD: nc2_pass
+    volumes:
+      - ./data/nextcloud2:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - nextcloud_net
+
+  nextcloud3:
+    image: nextcloud
+    container_name: nextcloud3
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: nextcloud3
+      MYSQL_USER: nc3_user
+      MYSQL_PASSWORD: nc3_pass
+    volumes:
+      - ./data/nextcloud3:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - nextcloud_net
+
+  nginx:
+    image: nginx
+    container_name: nginx-reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - nextcloud1
+      - nextcloud2
+    networks:
+      - nextcloud_net
+
+volumes:
+  mysql_data:
+
+networks:
+  nextcloud_net:
+
