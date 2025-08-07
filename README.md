@@ -93,3 +93,8 @@ To deploy two separate Nextcloud instances using Docker containers, each with it
    >  Each instance has its own DB, config, and S3 storage.
       
    >  NGINX reverse proxy directs traffic based on domain name.
+
+
+   <img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/a17c4927-9ebc-48a9-9487-88ef3d586b35" />
+
+
